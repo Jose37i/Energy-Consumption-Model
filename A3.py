@@ -256,7 +256,7 @@ testing_file_name = 'Neuron3.Test.'
 
 
 make_plot(neuron3_train_data__day_1, neuron3_weights_day_1, training_title + ' for day 1', training_file_name + 'Day1.png')
-make_plot(test_data_neuron_3, neuron2_weights_day_3, testing_tile + ' for day 1', testing_file_name + 'Day1.png')
+make_plot(test_data_neuron_3, neuron3_weights_day_1, testing_tile + ' for day 1', testing_file_name + 'Day1.png')
 print_graph_info(3, 1, training_file_name + 'Day1.png', testing_file_name + 'Day1.png', neuron3_weights_day_1,
                  neuron3_train_data__day_1, test_data_neuron_3)
 
