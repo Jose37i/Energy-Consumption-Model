@@ -1,6 +1,5 @@
 import math
 import random
-import numpy as np
 import csv
 import matplotlib.pyplot as plt
 
@@ -15,8 +14,10 @@ def normalize_it(passed_data):
     max_kw = max(kw_arr)
 
     for index in range(len(hour_arr)):
-        hour_arr[index] = (hour_arr[index] - min_hour) / (max_hour - min_hour)
-        kw_arr[index] = (kw_arr[index] - min_kw) / (max_kw - min_kw)
+        # hour_arr[index] = (hour_arr[index] - min_hour) / (max_hour - min_hour)
+        hour_arr[index] /= max_hour
+        kw_arr[index] /= max_kw
+        # kw_arr[index] = (kw_arr[index] - min_kw) / (max_kw - min_kw)
 
     passed_data = [bias_arr, hour_arr, kw_arr]
     return passed_data
@@ -81,7 +82,7 @@ def activation_function(data_point, passed_weight):
     return net_val
 
 
-def train(passed_data, p_weights, alpha, constant):
+def train(passed_data, p_weights, alpha):
     # All kw values
     kw_values = passed_data[len(p_weights)]
     # the length of the values  which is 48 , 3 days combined
@@ -90,8 +91,9 @@ def train(passed_data, p_weights, alpha, constant):
     # The length of the weights list
     weights_length = len(p_weights)
     # doing _ iterations
-    for iteration in range(300):
+    for iteration in range(50000):
         # for the length of the values which is 48
+        total_error_calc = 0
         for t in range(length):
             # declare inputs list
             inputs = []
@@ -99,28 +101,77 @@ def train(passed_data, p_weights, alpha, constant):
             for m in range(weights_length):
                 # append the input value corresponding to weight
                 inputs.append(passed_data[m][t])
-            # out = activvation function
+            # out = activation function
             # inputs ex. [1, 5, 3.71]
-            # weight sex. [-0.5, 0.5, -0.5]
-            out = activation_function(inputs, weights)
-            # error = the predcited kw value - the out
+            # weight ex. [-0.5, 0.5, -0.5]
+            out = activation_function(inputs, p_weights)
+            # error = the predicted kw value - the out
             error = float(kw_values[t]) - out
-            print(error)
+            total_error_calc += math.pow(error, 2)
             # adjust the weights
             for v in range(weights_length):
                 p_weights[v] += alpha * error * passed_data[v][t]
     return p_weights
 
 
-train_data, test_data = read_files(False)
-weights = generate_weights(2)
-# train_data = square_values(train_data, 2)
-weights = train(train_data, weights, 0.3, 1)
-print(weights)
+def test(tester_data, weight_set):
+    total_error = 0
+    kw_actual = tester_data[-1]
+    size = len(tester_data[0])
+    for x in range(0, size):
+        prediction = 0
+        for r in range(0, len(weight_set)):
+            prediction += tester_data[r][x] * weight_set[r]
+        total_error += (kw_actual[x] - prediction) ** 2
+    return total_error
 
 
+def make_plot(passed_points, p_weight_set, p_title, p_filename):
+    hours = passed_points[1]
+    kw = passed_points[-1]
+    predicted_points = []
+    plot = plt.figure()
+    for j in range(0, len(hours)):
+        temp = []
+        for f in range(0, len(p_weight_set)):
+            temp.append(passed_points[f][j])
+        predicted_points.append(activation_function(temp, p_weight_set))
 
-# train(train_data, weights, 0.1, 1)
-# print(generate_weights(2))
-# test_vals = np.array(test_data)
-# print(test_vals)
+    plt.xlabel('Hours', fontsize=17)
+    plt.ylabel('Kilowatts', fontsize=17)
+    plt.scatter(hours, kw)
+    plot.suptitle(p_title)
+    plt.plot(hours, predicted_points)
+    plot.savefig(p_filename)
+
+
+train_data, test_data = read_files(True)
+neuron1_weights = generate_weights(2)
+neuron1_weights = train(train_data, neuron1_weights, 0.1)
+training_title = 'Neuron 1: Training'
+training_file_name = 'Neuron1.Train.png'
+testing_tile = 'Neuron 1: Testing'
+testing_file_name = 'Neuron1.Test.png'
+make_plot(train_data, neuron1_weights, training_title, training_file_name)
+make_plot(test_data, neuron1_weights, testing_tile, testing_file_name)
+
+neuron2_weights = generate_weights(3)
+train_data_neuron_2 = square_values(train_data, 2)
+neuron2_weights = train(train_data_neuron_2, neuron2_weights, 0.2)
+training_title = 'Neuron 2: Training'
+training_file_name = 'Neuron2.Train.png'
+testing_tile = 'Neuron 2: Testing'
+testing_file_name = 'Neuron2.Test.png'
+make_plot(train_data_neuron_2, neuron2_weights, training_title, training_file_name)
+make_plot(test_data, neuron2_weights, testing_tile, testing_file_name)
+
+
+neuron3_weights = generate_weights(4)
+train3_data = square_values(train_data_neuron_2, 3)
+neuron3_weights = train(train3_data, neuron3_weights, 0.2)
+training_title = 'Neuron 3: Training'
+training_file_name = 'Neuron3.Train.png'
+testing_tile = 'Neuron 3: Testing'
+testing_file_name = 'Neuron3.Test.png'
+make_plot(train3_data, neuron3_weights, training_title, training_file_name)
+make_plot(test_data, neuron3_weights, testing_tile, testing_file_name)
