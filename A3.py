@@ -131,16 +131,29 @@ def make_plot(passed_points, p_weight_set, p_title, p_filename):
     kw = passed_points[-1]
     predicted_points = []
     plot = plt.figure()
+    plot.suptitle(p_title)
+
     for j in range(0, len(hours)):
         temp = []
         for f in range(0, len(p_weight_set)):
             temp.append(passed_points[f][j])
         predicted_points.append(activation_function(temp, p_weight_set))
+        plt.plot(hours[j], predicted_points[j])
+
+    hours_to_predicted_dictionary = {}
+    hours_to_kilowatt_dictionary = {}
+    for j in range(len(hours)):
+        hours_to_predicted_dictionary[hours[j]] = predicted_points[j]
+        hours_to_kilowatt_dictionary[hours[j]] = kw[j]
+    hours.sort()
+    for t in range(len(hours)):
+        val = hours[t]
+        predicted_points[t] = hours_to_predicted_dictionary[val]
+        kw[t] = hours_to_kilowatt_dictionary[val]
 
     plt.xlabel('Hours', fontsize=17)
     plt.ylabel('Kilowatts', fontsize=17)
     plt.scatter(hours, kw)
-    plot.suptitle(p_title)
     plt.plot(hours, predicted_points)
     plot.savefig(p_filename)
 
@@ -170,7 +183,7 @@ training_title = 'Neuron 2: Training'
 training_file_name = 'Neuron2.Train.png'
 testing_tile = 'Neuron 2: Testing'
 testing_file_name = 'Neuron2.Test.png'
-make_plot(train_data_neuron_2, neuron2_weights, testing_tile, testing_file_name)
+make_plot(train_data_neuron_2, neuron2_weights, training_title, training_file_name)
 make_plot(test_data_neuron_2, neuron2_weights, testing_tile, testing_file_name)
 print('Neuron 2:')
 print('\tTraining Graph File Name is: ' + training_file_name)
