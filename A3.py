@@ -154,17 +154,30 @@ testing_tile = 'Neuron 1: Testing'
 testing_file_name = 'Neuron1.Test.png'
 make_plot(train_data, neuron1_weights, training_title, training_file_name)
 make_plot(test_data, neuron1_weights, testing_tile, testing_file_name)
+print('Neuron 1:')
+print('\tTraining Graph File Name is: ' + training_file_name)
+print('\tTesting Graph File Name is: ' + testing_file_name)
+print('\tWeights are [Bias, Hour]  ---> ' + str(neuron1_weights))
+print('\tTraining Error:' + str(test(train_data, neuron1_weights)))
+print('\tTesting Error:' + str(test(test_data, neuron1_weights)) + '\n\n')
+
 
 neuron2_weights = generate_weights(3)
 train_data_neuron_2 = square_values(train_data, 2)
-test_data_neuron_2 = square_values(test_data,2)
+test_data_neuron_2 = square_values(test_data, 2)
 neuron2_weights = train(train_data_neuron_2, neuron2_weights, 0.2)
 training_title = 'Neuron 2: Training'
 training_file_name = 'Neuron2.Train.png'
 testing_tile = 'Neuron 2: Testing'
 testing_file_name = 'Neuron2.Test.png'
-make_plot(train_data_neuron_2, neuron2_weights, training_title, training_file_name)
+make_plot(train_data_neuron_2, neuron2_weights, testing_tile, testing_file_name)
 make_plot(test_data_neuron_2, neuron2_weights, testing_tile, testing_file_name)
+print('Neuron 2:')
+print('\tTraining Graph File Name is: ' + training_file_name)
+print('\tTesting Graph File Name is: ' + testing_file_name)
+print('\tWeights are [Bias, Hour, Hour^2]  ---> ' + str(neuron2_weights))
+print('\tTraining Error:' + str(test(train_data_neuron_2, neuron2_weights)))
+print('\tTesting Error:' + str(test(test_data_neuron_2, neuron2_weights)) + '\n\n')
 
 
 neuron3_weights = generate_weights(4)
@@ -177,3 +190,9 @@ testing_tile = 'Neuron 3: Testing'
 testing_file_name = 'Neuron3.Test.png'
 make_plot(train3_data, neuron3_weights, training_title, training_file_name)
 make_plot(test_data_neuron_3, neuron3_weights, testing_tile, testing_file_name)
+print('Neuron 3:')
+print('\tTraining Graph File Name is: ' + training_file_name)
+print('\tTesting Graph File Name is: ' + testing_file_name)
+print('\tWeights are [Bias, Hour, Hour^2, Hour^3]  ---> ' + str(neuron3_weights))
+print('\tTraining Error:' + str(test(train3_data, neuron3_weights)))
+print('\tTesting Error:' + str(test(test_data_neuron_3, neuron3_weights)) + '\n\n')
