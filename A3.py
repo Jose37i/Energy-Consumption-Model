@@ -147,7 +147,7 @@ def make_plot(passed_points, p_weight_set, p_title, p_filename):
 
 train_data, test_data = read_files(True)
 neuron1_weights = generate_weights(2)
-neuron1_weights = train(train_data, neuron1_weights, 0.1)
+neuron1_weights = train(train_data, neuron1_weights, 0.01)
 training_title = 'Neuron 1: Training'
 training_file_name = 'Neuron1.Train.png'
 testing_tile = 'Neuron 1: Testing'
@@ -157,21 +157,23 @@ make_plot(test_data, neuron1_weights, testing_tile, testing_file_name)
 
 neuron2_weights = generate_weights(3)
 train_data_neuron_2 = square_values(train_data, 2)
+test_data_neuron_2 = square_values(test_data,2)
 neuron2_weights = train(train_data_neuron_2, neuron2_weights, 0.2)
 training_title = 'Neuron 2: Training'
 training_file_name = 'Neuron2.Train.png'
 testing_tile = 'Neuron 2: Testing'
 testing_file_name = 'Neuron2.Test.png'
 make_plot(train_data_neuron_2, neuron2_weights, training_title, training_file_name)
-make_plot(test_data, neuron2_weights, testing_tile, testing_file_name)
+make_plot(test_data_neuron_2, neuron2_weights, testing_tile, testing_file_name)
 
 
 neuron3_weights = generate_weights(4)
 train3_data = square_values(train_data_neuron_2, 3)
+test_data_neuron_3 = square_values(test_data_neuron_2, 3)
 neuron3_weights = train(train3_data, neuron3_weights, 0.2)
 training_title = 'Neuron 3: Training'
 training_file_name = 'Neuron3.Train.png'
 testing_tile = 'Neuron 3: Testing'
 testing_file_name = 'Neuron3.Test.png'
 make_plot(train3_data, neuron3_weights, training_title, training_file_name)
-make_plot(test_data, neuron3_weights, testing_tile, testing_file_name)
+make_plot(test_data_neuron_3, neuron3_weights, testing_tile, testing_file_name)
