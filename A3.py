@@ -114,7 +114,7 @@ def train(passed_data, p_weights, alpha):
     return p_weights
 
 
-def test(tester_data, weight_set):
+def tester(tester_data, weight_set):
     total_error = 0
     kw_actual = tester_data[-1]
     size = len(tester_data[0])
@@ -156,6 +156,15 @@ def make_plot(passed_points, p_weight_set, p_title, p_filename):
     plot.savefig(p_filename)
 
 
+def print_graph_info(neuron_number, p_day_number, p_training_file_name, p_testing_file_name, weights_for_graph, p_train_data, p_test_data):
+    print('Neuron ' + str(neuron_number) + ':')
+    print('\tTraining Graph File Name is: ' + p_training_file_name)
+    print('\tTesting Graph File Name is: ' + p_testing_file_name)
+    print('\tWeights are [Bias, Hour, Hour^2, Hour^3]  ---> ' + str(weights_for_graph))
+    print('\tTraining Error:' + str(tester(p_train_data, weights_for_graph)))
+    print('\tTesting Error:' + str(tester(p_test_data, weights_for_graph)) + '\n\n')
+
+
 train_data, test_data = read_files(True)
 neuron1_weights = generate_weights(2)
 neuron1_weights = train(train_data, neuron1_weights, 0.01)
@@ -165,12 +174,7 @@ testing_tile = 'Neuron 1: Testing'
 testing_file_name = 'Neuron1.Test.png'
 make_plot(train_data, neuron1_weights, training_title, training_file_name)
 make_plot(test_data, neuron1_weights, testing_tile, testing_file_name)
-print('Neuron 1:')
-print('\tTraining Graph File Name is: ' + training_file_name)
-print('\tTesting Graph File Name is: ' + testing_file_name)
-print('\tWeights are [Bias, Hour]  ---> ' + str(neuron1_weights))
-print('\tTraining Error:' + str(test(train_data, neuron1_weights)))
-print('\tTesting Error:' + str(test(test_data, neuron1_weights)) + '\n\n')
+print_graph_info(1, 1, training_file_name, testing_file_name, neuron1_weights, train_data, test_data)
 
 
 neuron2_weights = generate_weights(3)
@@ -183,12 +187,7 @@ testing_tile = 'Neuron 2: Testing'
 testing_file_name = 'Neuron2.Test.png'
 make_plot(train_data_neuron_2, neuron2_weights, training_title, training_file_name)
 make_plot(test_data_neuron_2, neuron2_weights, testing_tile, testing_file_name)
-print('Neuron 2:')
-print('\tTraining Graph File Name is: ' + training_file_name)
-print('\tTesting Graph File Name is: ' + testing_file_name)
-print('\tWeights are [Bias, Hour, Hour^2]  ---> ' + str(neuron2_weights))
-print('\tTraining Error:' + str(test(train_data_neuron_2, neuron2_weights)))
-print('\tTesting Error:' + str(test(test_data_neuron_2, neuron2_weights)) + '\n\n')
+print_graph_info(2, 1, training_file_name, testing_file_name, neuron2_weights, train_data_neuron_2, test_data_neuron_2)
 
 
 neuron3_weights = generate_weights(4)
@@ -201,9 +200,4 @@ testing_tile = 'Neuron 3: Testing'
 testing_file_name = 'Neuron3.Test.png'
 make_plot(train3_data, neuron3_weights, training_title, training_file_name)
 make_plot(test_data_neuron_3, neuron3_weights, testing_tile, testing_file_name)
-print('Neuron 3:')
-print('\tTraining Graph File Name is: ' + training_file_name)
-print('\tTesting Graph File Name is: ' + testing_file_name)
-print('\tWeights are [Bias, Hour, Hour^2, Hour^3]  ---> ' + str(neuron3_weights))
-print('\tTraining Error:' + str(test(train3_data, neuron3_weights)))
-print('\tTesting Error:' + str(test(test_data_neuron_3, neuron3_weights)) + '\n\n')
+print_graph_info(3, 1, training_file_name, testing_file_name, neuron3_weights, train3_data, test_data_neuron_3)
