@@ -127,8 +127,9 @@ def test(tester_data, weight_set):
 
 
 def make_plot(passed_points, p_weight_set, p_title, p_filename):
-    hours = passed_points[1]
-    kw = passed_points[-1]
+    hours = passed_points[1].copy()
+    kw = passed_points[-1].copy()
+    temp_hours = passed_points[1].copy()
     predicted_points = []
     plot = plt.figure()
     plot.suptitle(p_title)
@@ -141,20 +142,17 @@ def make_plot(passed_points, p_weight_set, p_title, p_filename):
         plt.plot(hours[j], predicted_points[j])
 
     hours_to_predicted_dictionary = {}
-    hours_to_kilowatt_dictionary = {}
     for j in range(len(hours)):
         hours_to_predicted_dictionary[hours[j]] = predicted_points[j]
-        hours_to_kilowatt_dictionary[hours[j]] = kw[j]
     hours.sort()
     for t in range(len(hours)):
         val = hours[t]
         predicted_points[t] = hours_to_predicted_dictionary[val]
-        kw[t] = hours_to_kilowatt_dictionary[val]
 
     plt.xlabel('Hours', fontsize=17)
     plt.ylabel('Kilowatts', fontsize=17)
-    plt.scatter(hours, kw)
-    plt.plot(hours, predicted_points)
+    plt.scatter(temp_hours, kw)
+    plt.plot(hours, predicted_points, '#2fef10')
     plot.savefig(p_filename)
 
 
